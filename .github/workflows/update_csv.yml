@@ -35,7 +35,7 @@ jobs:
       - run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/MrFireHyper/compsci.git
+          git remote set-url origin https://x-access-token:${{ secrets.ghpat }}@github.com/MrFireHyper/compsci.git
           git add .
           git commit -m "Updated CSV from Kaggle" || echo "No changes"
           git push
