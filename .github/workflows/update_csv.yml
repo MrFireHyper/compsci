@@ -1,0 +1,40 @@
+name: Update and Clean CSV
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: pip install kaggle pandas
+
+      - run: |
+          mkdir -p ~/.kaggle
+          echo "${{ secrets.KAGGLE_KEY }}" > ~/.kaggle/kaggle.json
+          chmod 600 ~/.kaggle/kaggle.json
+
+      - run: kaggle datasets download -d nelgiriyewithana/global-weather-repository -p data --unzip
+
+      - run: |
+          python -c "
+          import pandas as pd, glob
+          files = glob.glob('data/*.csv')
+          if files:
+              df = pd.read_csv(files[0])
+              cols = ['air_quality_us-epa-index', 'air_quality_Sulphur_dioxide', 'air_quality_PM2.5', 'air_quality_PM10', 'air_quality_Nitrogen_dioxide', 'air_quality_Carbon_Monoxide', 'air_quality_Ozone', 'last_updated_epoch', 'wind_degree']
+              df.drop(columns=[c for c in cols if c in df.columns], inplace=True)
+              df.to_csv(files[0], index=False)
+          "
+
+      - run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git commit -m "Updated CSV from Kaggle" || echo "No changes"
+          git push
