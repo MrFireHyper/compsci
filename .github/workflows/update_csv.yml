@@ -16,7 +16,7 @@ jobs:
 
       - run: |
           mkdir -p ~/.kaggle
-          echo "${{ secrets.KAGGLE_KEY }}" > ~/.kaggle/kaggle.json
+          echo "{\"username\": \"${{ secrets.KAGGLE_USERNAME }}\", \"key\": \"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
           chmod 600 ~/.kaggle/kaggle.json
 
       - run: kaggle datasets download -d nelgiriyewithana/global-weather-repository -p data --unzip
