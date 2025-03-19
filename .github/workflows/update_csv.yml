@@ -26,7 +26,13 @@ jobs:
           files = glob.glob('data/*.csv')
           if files:
               df = pd.read_csv(files[0])
-              cols = ['air_quality_us-epa-index', 'air_quality_Sulphur_dioxide', 'air_quality_PM2.5', 'air_quality_PM10', 'air_quality_Nitrogen_dioxide', 'air_quality_Carbon_Monoxide', 'air_quality_Ozone', 'last_updated_epoch', 'wind_degree']
+              cols = [
+                  'air_quality_us-epa-index', 'air_quality_Sulphur_dioxide', 'air_quality_PM2.5', 
+                  'air_quality_PM10', 'air_quality_Nitrogen_dioxide', 'air_quality_Carbon_Monoxide', 
+                  'air_quality_Ozone', 'last_updated_epoch', 'wind_degree',
+                  'wind_mph', 'pressure_in', 'pressure_mb', 'precip_in', 'cloud', 
+                  'feels_like_fahrenheit', 'visibility_miles', 'gust_mph', 'temperature_fahrenheit'
+              ]
               df.drop(columns=[c for c in cols if c in df.columns], inplace=True)
               df.to_csv(files[0], index=False)
           "
