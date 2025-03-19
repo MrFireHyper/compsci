@@ -18,7 +18,6 @@ jobs:
           mkdir -p ~/.kaggle
           echo "{\"username\": \"${{ secrets.KAGGLE_USERNAME }}\", \"key\": \"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
           chmod 600 ~/.kaggle/kaggle.json
-
       - run: kaggle datasets download -d nelgiriyewithana/global-weather-repository -p data --unzip
 
       - run: |
@@ -31,11 +30,10 @@ jobs:
               df.drop(columns=[c for c in cols if c in df.columns], inplace=True)
               df.to_csv(files[0], index=False)
           "
-
       - run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.ghpat }}@github.com/MrFireHyper/compsci.git
+          git remote set-url origin https://x-access-token:${{ secrets.HTPAT }}@github.com/MrFireHyper/compsci.git
           git add .
           git commit -m "Updated CSV from Kaggle" || echo "No changes"
           git push
